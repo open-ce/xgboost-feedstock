@@ -1,0 +1,27 @@
+# Recipe for metapackages to install CPU and CUDA versions of xgboost
+
+{% set version = "1.2.0" %}
+
+package:
+  name: py-xgboost{{ '-cpu' if build_type == 'cpu' else '' }}
+  version: {{ version }}
+
+build:
+  number: 1
+
+requirements:
+  run:
+    - python {{ python }}
+    - libxgboost-base {{ version }}*
+    - py-xgboost-base {{ version }}*
+    - _xgboost_select =={{ xgboost_select_version }}*
+
+about:
+  license: Apache-2.0
+  license_file: ../LICENSE
+  summary: A metapackage for selecting a XGBoost variant.
+
+extra:
+  recipe-maintainers:
+    - open-ce/open-ce-dev-team
+
