@@ -18,9 +18,9 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - {{ compiler('cuda') }}                   #[build_type == 'cuda']
     - cmake {{ cmake }}
     - make {{ make }}
-    - cudatoolkit-dev {{ cudatoolkit }}        # [build_type == 'cuda']
   host:
     - cudatoolkit {{ cudatoolkit }}            #[build_type == 'cuda']
     - nccl {{ nccl }}                          #[build_type == 'cuda']
@@ -32,13 +32,15 @@ outputs:
       number: 2
       string: {{ build_type }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
       string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
+      script_env:
+        - CUDA_HOME
 
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }}               #[build_type == 'cuda']
         - make {{ make }}
-        - cudatoolkit-dev {{ cudatoolkit }}    #[build_type == 'cuda']
       host:
         - cudatoolkit {{ cudatoolkit }}        #[build_type == 'cuda']
         - nccl {{ nccl }}                      #[build_type == 'cuda']
