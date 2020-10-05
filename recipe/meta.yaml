@@ -33,7 +33,7 @@ outputs:
       string: {{ build_type }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
       string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
       script_env:
-        - CUDA_HOME
+        - OPEN_CE_CUDA_HOME
 
     requirements:
       build:
