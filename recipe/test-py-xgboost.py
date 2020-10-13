@@ -19,7 +19,6 @@ clf = xgboost.XGBClassifier(
     n_estimators=10,
     silent=True,
     objective='multi:softmax',
-    tree_method='gpu_hist',
     seed=5)
 clf.fit(Xtrn, ytrn)
 ypred = clf.predict(Xtst)
