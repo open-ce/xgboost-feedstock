@@ -28,7 +28,7 @@ outputs:
   - name: libxgboost-base
     script: install-libxgboost.sh
     build:
-      number: 3
+      number: 4
       string: {{ build_type }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
       string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
 
