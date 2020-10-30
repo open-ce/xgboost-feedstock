@@ -28,7 +28,6 @@ then
 elif [[ $build_type == "cuda" ]]
 then
     export CUDAHOSTCXX=$CXX
-    export CUDA_HOME=/usr/local/cuda
     cmake \
         -DCMAKE_INSTALL_PREFIX=${PREFIX} \
         -DCMAKE_CUDA_COMPILER=${CUDA_HOME}/bin/nvcc -DCMAKE_CUDA_HOST_COMPILER=${CXX} \
