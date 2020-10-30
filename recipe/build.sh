@@ -30,6 +30,7 @@ then
     export CUDAHOSTCXX=$CXX
     cmake \
         -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+        -DCMAKE_CUDA_COMPILER=${CUDA_HOME}/bin/nvcc -DCMAKE_CUDA_HOST_COMPILER=${CXX} \
         -DCMAKE_INCLUDE_PATH=$PREFIX/include \
         -DUSE_CUDA=ON \
         -DUSE_NCCL=ON \
