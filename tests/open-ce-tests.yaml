@@ -6,6 +6,6 @@ tests:
   - name: Run XGBoost Python tests
     command: |
         cd xgboost
-        pytest -v -k "not test_cli" tests/python
+        pytest -v -k "not test_cli and not test_plotting and not test_sklearn_plotting" tests/python
   - name: Clean tests
     command: rm -rf xgboost
