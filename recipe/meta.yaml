@@ -21,12 +21,13 @@ requirements:
     - cmake {{ cmake }}
     - make {{ make }}
     - git >={{ git }}
+    - patch
   host:
     - cudatoolkit {{ cudatoolkit }}            #[build_type == 'cuda']
     - nccl {{ nccl }}                          #[build_type == 'cuda']
 
 build:
-  number: 2
+  number: 3
   script_env:
     - CUDA_HOME
 
