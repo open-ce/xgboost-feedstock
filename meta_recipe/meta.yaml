@@ -11,7 +11,6 @@ build:
 
 requirements:
   run:
-    - python {{ python }}
     - libxgboost-base {{ version }}*
     - py-xgboost-base {{ version }}*
     - _xgboost_select =={{ xgboost_select_version }}*
