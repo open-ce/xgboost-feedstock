@@ -3,9 +3,10 @@ tests:
     command: |
         git clone --recursive -b v$(python -c "import xgboost; print(xgboost.__version__)") https://github.com/dmlc/xgboost
         conda install -y pytest mock hypothesis matplotlib pandas python-graphviz urllib3
+        pip install distributed 
   - name: Run XGBoost Python tests
     command: |
         cd xgboost
-        pytest -v -k "not test_cli and not test_plotting and not test_sklearn_plotting" tests/python
+        pytest -v -k "not test_cli and not test_plotting and not test_sklearn_plotting and not test_model_compatibility and not test_hist and not test_approx" tests/python
   - name: Clean tests
     command: rm -rf xgboost
