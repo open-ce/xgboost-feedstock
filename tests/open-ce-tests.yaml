@@ -1,6 +1,7 @@
 tests:
   - name: Setup XGBoost Tests
     command: |
+        conda install -y git
         git clone --recursive -b v$(python -c "import xgboost; print(xgboost.__version__)") https://github.com/dmlc/xgboost
         conda install -y pytest mock hypothesis matplotlib pandas python-graphviz urllib3 psutil dask
         pip install distributed 
