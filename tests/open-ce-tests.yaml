@@ -1,12 +1,20 @@
 tests:
   - name: Setup XGBoost Tests
     command: |
+        conda install -y git
         git clone --recursive -b v$(python -c "import xgboost; print(xgboost.__version__)") https://github.com/dmlc/xgboost
-        conda install -y pytest mock hypothesis matplotlib pandas python-graphviz urllib3
+        conda install -y pytest mock hypothesis matplotlib pandas python-graphviz urllib3 psutil dask
         pip install distributed 
   - name: Run XGBoost Python tests
     command: |
         cd xgboost
-        pytest -v -k "not test_cli and not test_plotting and not test_sklearn_plotting and not test_model_compatibility and not test_hist and not test_approx" tests/python
+        PYTHON_VER=$(python -c 'import platform; print(platform.python_version())')
+        SKIPPED_TESTS="not test_cli and not test_plotting and not test_sklearn_plotting and not test_model_compatibility and not test_hist and not test_approx "
+        if [[ "$PYTHON_VER" =~ "3.6" ]]
+        then
+           SKIPPED_TESTS+="and not test_with_asyncio"
+        fi
+
+        pytest -v -k "${SKIPPED_TESTS}" tests/python
   - name: Clean tests
     command: rm -rf xgboost
