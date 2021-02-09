@@ -27,7 +27,7 @@ requirements:
     - nccl {{ nccl }}                          #[build_type == 'cuda']
 
 build:
-  number: 3
+  number: 1
   script_env:
     - CUDA_HOME
 
