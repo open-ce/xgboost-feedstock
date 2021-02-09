@@ -1,6 +1,6 @@
 # Builds the CPU and CUDA variants of libxgboost-base and py-xgboost-base packages
 {% set name = "xgboost-base" %}
-{% set version = "1.3.0" %}
+{% set version = "1.3.3" %}
 
 package:
   name: {{ name|lower }}
