@@ -26,4 +26,4 @@ jobs:
         with:
           auto-update-conda: true
           python-version: "3.7"
-      - uses: open-ce/open-ce/.github/actions/feedstock-required-pr@master
+      - uses: open-ce/open-ce/.github/actions/feedstock-required-pr@bethune-bryant-patch-1
