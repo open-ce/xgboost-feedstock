@@ -23,7 +23,6 @@ about:
   home: https://github.com/dmlc/xgboost/
   license: Apache-2.0
   license_family: APACHE
-  license_file: ../LICENSE
   summary: A metapackage for selecting a XGBoost variant.
   description: A metapackage for selecting a XGBoost variant.
   doc_url: https://xgboost.readthedocs.io/en/latest/
