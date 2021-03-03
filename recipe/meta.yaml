@@ -19,7 +19,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake {{ cmake }}
-    - make {{ make }}
+    - make
     - git >={{ git }}
     - patch
   host:
@@ -27,7 +27,7 @@ requirements:
     - nccl {{ nccl }}                          #[build_type == 'cuda']
 
 build:
-  number: 2
+  number: 3
   script_env:
     - CUDA_HOME
 
@@ -42,7 +42,7 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - make {{ make }}
+        - make
       host:
         - cudatoolkit {{ cudatoolkit }}        #[build_type == 'cuda']
         - nccl {{ nccl }}                      #[build_type == 'cuda']
