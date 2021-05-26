@@ -32,13 +32,14 @@ then
 elif [[ $build_type == "cuda" ]]
 then
     export CUDAHOSTCXX=$CXX
+    export CXXFLAGS="${CXXFLAGS} -std=c++14"
     cmake \
         -DCMAKE_INSTALL_PREFIX=${PREFIX} \
         -DCMAKE_CUDA_COMPILER=${CUDA_HOME}/bin/nvcc -DCMAKE_CUDA_HOST_COMPILER=${CXX} \
         -DCMAKE_INCLUDE_PATH=$PREFIX/include \
         -DUSE_CUDA=ON \
         -DUSE_NCCL=ON \
+        -DCMAKE_CUDA_FLAGS="${CMAKE_CUDA_FLAGS} -std=c++14" \
         ..
 fi
-
 make -j${CPU_COUNT} ${VERBOSE_CM}
