@@ -1,13 +1,13 @@
 # Recipe for metapackages to install CPU and CUDA versions of xgboost
 
-{% set version = "1.3.3" %}
+{% set version = "1.4.2" %}
 
 package:
   name: py-xgboost{{ '-cpu' if build_type == 'cpu' else '' }}
   version: {{ version }}
 
 build:
-  number: 2
+  number: 1
   string: py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }}   #[build_type == 'cpu']
   string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
 
