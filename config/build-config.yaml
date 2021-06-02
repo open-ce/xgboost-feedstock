@@ -1,12 +1,6 @@
 recipes:
-  - name : xgboost-select
-    path : select_recipe
-
   - name : xgboost-base
     path : recipe
-
-  - name : xgboost-meta
-    path : meta_recipe
 
 channels:
   - defaults

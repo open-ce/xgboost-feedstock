@@ -1,9 +1,12 @@
-# Builds the CPU and CUDA variants of libxgboost-base and py-xgboost-base packages
-{% set name = "xgboost-base" %}
+# Builds the CPU and CUDA variants of libxgboost and xgboost packages
 {% set version = "1.4.2" %}
+{% set build_ext_version = version %}
+{% set proc_build_number = "1" %}
+
+{% set name = "xgboost-base" %}
 
 package:
-  name: {{ name|lower }}
+  name: xgboost-ext
   version: {{ version }}
 
 source:
@@ -20,64 +23,127 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake {{ cmake }}
     - make
-    - git >={{ git }}
-    - patch
+    - cudatoolkit {{ cudatoolkit }}            #[build_type == 'cuda']
+    - nccl {{ nccl }}                          #[build_type == 'cuda']
   host:
     - cudatoolkit {{ cudatoolkit }}            #[build_type == 'cuda']
     - nccl {{ nccl }}                          #[build_type == 'cuda']
 
 build:
   number: 1
+  run_exports:
+    - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
+{% if build_type == 'cuda' %}
   script_env:
     - CUDA_HOME
+{% endif %}
 
 outputs:
-  - name: libxgboost-base
-    script: install-libxgboost.sh
+  - name: xgboost-proc
+    version: {{ build_ext_version }}
     build:
-      string: {{ build_type }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
-      string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
+      number: {{ proc_build_number }}
+      string: {{ build_type }}
+    test:
+      commands:
+         - exit 0
+    about:
+      home: https://github.com/dmlc/xgboost/
+      license: Apache-2.0
+      license_family: APACHE
+      license_file: LICENSE
+      summary: Scalable, Portable and Distributed Gradient Boosting Library
+
+  - name: libxgboost
+    script: install-libxgboost.sh
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_type }} #[build_type == 'cpu']
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_type }}{{ cudatoolkit | replace(".*", "") }} #[build_type == 'cuda']
+{% if build_type == 'cuda' %}
+    script_env:
+      - CUDA_HOME
+{% endif %}
+    run_exports:
+      - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
+    track_features:
+      {{ "- xgboost-cuda" if build_type == 'cuda' else "" }} 
 
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
+        - cmake {{ cmake }}
         - make
+        - git >={{ git }}
+        - patch
       host:
-        - cudatoolkit {{ cudatoolkit }}        #[build_type == 'cuda']
-        - nccl {{ nccl }}                      #[build_type == 'cuda']
+        - cudatoolkit {{ cudatoolkit }}            #[build_type == 'cuda']
+        - nccl {{ nccl }}                          #[build_type == 'cuda']
       run:
         - cudatoolkit {{ cudatoolkit }}        #[build_type == 'cuda']
         - nccl {{ nccl }}                      #[build_type == 'cuda']
-        - _xgboost_select {{ xgboost_select_version }} 
+      run_constrained:
+        - lightgbm-proc * {{ build_type }}
 
-  - name: py-xgboost-base
+    about:
+      home: https://github.com/dmlc/xgboost/
+      license: Apache-2.0
+      license_family: APACHE
+      license_file: LICENSE
+      summary: Scalable, Portable and Distributed Gradient Boosting Library
+      description: |
+        XGBoost is an optimized distributed gradient boosting library
+        designed to be highly efficient, flexible and portable, for Python, R, Java,
+        Scala, C++ and more.
+      doc_url: https://xgboost.readthedocs.io/en/latest/
+      dev_url: https://github.com/dmlc/xgboost/
+
+  - name: xgboost
     script: install-py-xgboost.sh
+    version: {{ version }}
     build:
-      string: {{ build_type }}_py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
-      string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
+      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_type }} #[build_type == 'cpu']
+      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_type }}{{ cudatoolkit | replace(".*", "") }} #[build_type == 'cuda']
+{% if build_type == 'cuda' %}
+      script_env:
+        - CUDA_HOME
+{% endif %}
+      track_features:
+        {{ "- xgboost-cuda" if build_type == 'cuda' else "" }}
 
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
       host:
-        - {{ pin_subpackage('libxgboost-base', exact=True) }}
+        - {{ pin_subpackage('libxgboost', exact=True) }}
         - python {{ python }}
         - setuptools {{ setuptools }}
       run:
-        - {{ pin_subpackage('libxgboost-base', exact=True) }}
+        - {{ pin_subpackage('libxgboost', exact=True) }}
         - python {{ python }}
         - numpy {{ numpy }}
         - scipy {{ scipy }}
         - scikit-learn
-        - _xgboost_select {{ xgboost_select_version }}
+      run_constrained:
+        - xgboost-proc * {{ build_type }}
       extra:
         toolkitused: {{ cudatoolkit }}           #[build_type == 'cuda']
     test:
       script: test-py-xgboost.py
       imports:
         - xgboost
+    about:
+      home: https://github.com/dmlc/xgboost/
+      license: Apache-2.0
+      license_family: APACHE
+      license_file: LICENSE
+      summary: Scalable, Portable and Distributed Gradient Boosting Library
+      description: |
+        XGBoost is an optimized distributed gradient boosting library
+        designed to be highly efficient, flexible and portable, for Python, R, Java,
+        Scala, C++ and more.
 
 about:
   home: https://github.com/dmlc/xgboost/
