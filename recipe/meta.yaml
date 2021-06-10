@@ -76,8 +76,6 @@ outputs:
         - scipy {{ scipy }}
         - scikit-learn
         - _xgboost_select {{ xgboost_select_version }}
-      extra:
-        toolkitused: {{ cudatoolkit }}           #[build_type == 'cuda']
     test:
       script: test-py-xgboost.py
       imports:
