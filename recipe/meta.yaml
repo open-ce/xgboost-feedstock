@@ -21,7 +21,7 @@ requirements:
     - libgcc-ng {{ libgcc }}
     - libstdcxx-ng {{ libstdcxx }}
     - cmake {{ cmake }}
-    - make {{ make }}
+    - make
     - git >={{ git }}
     - patch
   host:
@@ -31,7 +31,7 @@ requirements:
     - libstdcxx-ng {{ libstdcxx }}
 
 build:
-  number: 1
+  number: 3
   script_env:
     - CUDA_HOME
 
@@ -46,7 +46,7 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - make {{ make }}
+        - make
       host:
         - cudatoolkit {{ cudatoolkit }}        #[build_type == 'cuda']
         - nccl {{ nccl }}                      #[build_type == 'cuda']
@@ -86,6 +86,7 @@ outputs:
 about:
   home: https://github.com/dmlc/xgboost/
   license: Apache-2.0
+  license_family: APACHE
   license_file: LICENSE
   summary: Scalable, Portable and Distributed Gradient Boosting Library
   description: |
