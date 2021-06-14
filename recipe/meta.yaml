@@ -14,6 +14,11 @@ source:
     - 0001-conda-Unbundle-libxgboost.-dll-dylib-so.patch
     - 0002-Fix-R-package-PKGROOT.patch
 
+build:
+  ignore_run_exports:
+    - libgcc-ng
+    - libstdcxx-ng
+
 requirements:
   build:
     - {{ compiler('c') }}
@@ -29,6 +34,9 @@ requirements:
     - nccl {{ nccl }}                          #[build_type == 'cuda']
     - libgcc-ng {{ libgcc }}
     - libstdcxx-ng {{ libstdcxx }}
+  run:
+    - libgcc-ng {{ libgcc }}
+    - libstdcxx-ng {{ libstdcxx }}
 
 build:
   number: 4
@@ -41,6 +49,9 @@ outputs:
     build:
       string: {{ build_type }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
       string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
+    ignore_run_exports:
+      - libgcc-ng
+      - libstdcxx-ng
 
     requirements:
       build:
@@ -54,21 +65,30 @@ outputs:
         - cudatoolkit {{ cudatoolkit }}        #[build_type == 'cuda']
         - nccl {{ nccl }}                      #[build_type == 'cuda']
         - _xgboost_select {{ xgboost_select_version }} 
+        - libgcc-ng {{ libgcc }}
+        - libstdcxx-ng {{ libstdcxx }}
 
   - name: py-xgboost-base
     script: install-py-xgboost.sh
     build:
       string: {{ build_type }}_py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
       string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
+    ignore_run_exports:
+      - libgcc-ng
+      - libstdcxx-ng
 
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
+        - libgcc-ng {{ libgcc }}
+        - libstdcxx-ng {{ libstdcxx }}
       host:
         - {{ pin_subpackage('libxgboost-base', exact=True) }}
         - python {{ python }}
         - setuptools {{ setuptools }}
+        - libgcc-ng {{ libgcc }}
+        - libstdcxx-ng {{ libstdcxx }}
       run:
         - {{ pin_subpackage('libxgboost-base', exact=True) }}
         - python {{ python }}
@@ -76,8 +96,13 @@ outputs:
         - scipy {{ scipy }}
         - scikit-learn
         - _xgboost_select {{ xgboost_select_version }}
+        - libgcc-ng {{ libgcc }}
+        - libstdcxx-ng {{ libstdcxx }}
     test:
-      script: test-py-xgboost.py
+      files:
+        - test-py-xgboost.py
+      commands:
+        - python test-py-xgboost.py
       imports:
         - xgboost
 
