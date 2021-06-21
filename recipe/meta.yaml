@@ -17,10 +17,17 @@ source:
     - 0001-conda-Unbundle-libxgboost.-dll-dylib-so.patch
     - 0002-Fix-R-package-PKGROOT.patch
 
+build:
+  ignore_run_exports:
+    - libgcc-ng
+    - libstdcxx-ng
+
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - libgcc-ng {{ libgcc }}
+    - libstdcxx-ng {{ libstdcxx }}
     - cmake {{ cmake }}
     - make
     - cudatoolkit {{ cudatoolkit }}            #[build_type == 'cuda']
@@ -28,6 +35,11 @@ requirements:
   host:
     - cudatoolkit {{ cudatoolkit }}            #[build_type == 'cuda']
     - nccl {{ nccl }}                          #[build_type == 'cuda']
+    - libgcc-ng {{ libgcc }}
+    - libstdcxx-ng {{ libstdcxx }}
+  run:
+    - libgcc-ng {{ libgcc }}
+    - libstdcxx-ng {{ libstdcxx }}
 
 build:
   number: 1
@@ -58,16 +70,19 @@ outputs:
     script: install-libxgboost.sh
     version: {{ version }}
     build:
-      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_type }} #[build_type == 'cpu']
-      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_type }}{{ cudatoolkit | replace(".*", "") }} #[build_type == 'cuda']
+      string: {{ build_type }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
+      string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
 {% if build_type == 'cuda' %}
-    script_env:
-      - CUDA_HOME
+      script_env:
+        - CUDA_HOME
 {% endif %}
-    run_exports:
-      - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
-    track_features:
-      {{ "- xgboost-cuda" if build_type == 'cuda' else "" }} 
+      run_exports:
+        - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
+      track_features:
+        {{ "- xgboost-cuda" if build_type == 'cuda' else "" }} 
+      ignore_run_exports:
+        - libgcc-ng
+        - libstdcxx-ng
 
     requirements:
       build:
@@ -83,6 +98,8 @@ outputs:
       run:
         - cudatoolkit {{ cudatoolkit }}        #[build_type == 'cuda']
         - nccl {{ nccl }}                      #[build_type == 'cuda']
+        - libgcc-ng {{ libgcc }}
+        - libstdcxx-ng {{ libstdcxx }}
       run_constrained:
         - lightgbm-proc * {{ build_type }}
 
@@ -103,35 +120,47 @@ outputs:
     script: install-py-xgboost.sh
     version: {{ version }}
     build:
-      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_type }} #[build_type == 'cpu']
-      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_type }}{{ cudatoolkit | replace(".*", "") }} #[build_type == 'cuda']
+      string: {{ build_type }}_py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
+      string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
 {% if build_type == 'cuda' %}
       script_env:
         - CUDA_HOME
 {% endif %}
       track_features:
         {{ "- xgboost-cuda" if build_type == 'cuda' else "" }}
+      ignore_run_exports:
+        - libgcc-ng
+        - libstdcxx-ng
 
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
+        - libgcc-ng {{ libgcc }}
+        - libstdcxx-ng {{ libstdcxx }}
       host:
         - {{ pin_subpackage('libxgboost', exact=True) }}
         - python {{ python }}
         - setuptools {{ setuptools }}
+        - libgcc-ng {{ libgcc }}
+        - libstdcxx-ng {{ libstdcxx }}
       run:
         - {{ pin_subpackage('libxgboost', exact=True) }}
         - python {{ python }}
         - numpy {{ numpy }}
         - scipy {{ scipy }}
         - scikit-learn
+        - libgcc-ng {{ libgcc }}
+        - libstdcxx-ng {{ libstdcxx }}
       run_constrained:
         - xgboost-proc * {{ build_type }}
       extra:
         toolkitused: {{ cudatoolkit }}           #[build_type == 'cuda']
     test:
-      script: test-py-xgboost.py
+      files:
+        - test-py-xgboost.py
+      commands:
+        - python test-py-xgboost.py
       imports:
         - xgboost
     about:
