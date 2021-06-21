@@ -154,8 +154,6 @@ outputs:
         - libstdcxx-ng {{ libstdcxx }}
       run_constrained:
         - xgboost-proc * {{ build_type }}
-      extra:
-        toolkitused: {{ cudatoolkit }}           #[build_type == 'cuda']
     test:
       files:
         - test-py-xgboost.py
