@@ -1,7 +1,0 @@
-recipes:
-  - name : xgboost-base
-    path : recipe
-
-channels:
-  - defaults
-  - conda-forge

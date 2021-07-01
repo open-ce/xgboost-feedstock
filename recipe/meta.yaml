@@ -101,7 +101,7 @@ outputs:
         - libgcc-ng {{ libgcc }}
         - libstdcxx-ng {{ libstdcxx }}
       run_constrained:
-        - lightgbm-proc * {{ build_type }}
+        - xgboost-proc * {{ build_type }}
 
     about:
       home: https://github.com/dmlc/xgboost/
