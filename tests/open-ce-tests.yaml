@@ -3,8 +3,8 @@ tests:
     command: |
         conda install -y git
         git clone --recursive -b v$(python -c "import xgboost; print(xgboost.__version__)") https://github.com/dmlc/xgboost
-        conda install -y pytest mock hypothesis matplotlib pandas python-graphviz urllib3 psutil dask
-        pip install distributed 
+        conda install -y pytest mock hypothesis matplotlib pandas python-graphviz urllib3 psutil
+        conda install dask=2.30 distributed 
   - name: Run XGBoost Python tests
     command: |
         cd xgboost
