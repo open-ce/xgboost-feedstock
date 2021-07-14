@@ -18,9 +18,6 @@ source:
     - 0002-Fix-R-package-PKGROOT.patch
 
 build:
-  ignore_run_exports:
-    - libgcc-ng
-    - libstdcxx-ng
 
 requirements:
   build:
@@ -37,12 +34,9 @@ requirements:
     - nccl {{ nccl }}                          #[build_type == 'cuda']
     - libgcc-ng {{ libgcc }}
     - libstdcxx-ng {{ libstdcxx }}
-  run:
-    - libgcc-ng {{ libgcc }}
-    - libstdcxx-ng {{ libstdcxx }}
 
 build:
-  number: 1
+  number: 2
   run_exports:
     - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
 {% if build_type == 'cuda' %}
@@ -80,9 +74,6 @@ outputs:
         - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
       track_features:
         {{ "- xgboost-cuda" if build_type == 'cuda' else "" }} 
-      ignore_run_exports:
-        - libgcc-ng
-        - libstdcxx-ng
 
     requirements:
       build:
@@ -98,8 +89,6 @@ outputs:
       run:
         - cudatoolkit {{ cudatoolkit }}        #[build_type == 'cuda']
         - nccl {{ nccl }}                      #[build_type == 'cuda']
-        - libgcc-ng {{ libgcc }}
-        - libstdcxx-ng {{ libstdcxx }}
       run_constrained:
         - xgboost-proc * {{ build_type }}
 
@@ -128,9 +117,6 @@ outputs:
 {% endif %}
       track_features:
         {{ "- xgboost-cuda" if build_type == 'cuda' else "" }}
-      ignore_run_exports:
-        - libgcc-ng
-        - libstdcxx-ng
 
     requirements:
       build:
@@ -150,8 +136,6 @@ outputs:
         - numpy {{ numpy }}
         - scipy {{ scipy }}
         - scikit-learn
-        - libgcc-ng {{ libgcc }}
-        - libstdcxx-ng {{ libstdcxx }}
       run_constrained:
         - xgboost-proc * {{ build_type }}
     test:
