@@ -25,6 +25,7 @@ requirements:
     - {{ compiler('cxx') }}
     - libgcc-ng {{ libgcc }}
     - libstdcxx-ng {{ libstdcxx }}
+    - libgfortran-ng {{ libgfortran }}
     - cmake {{ cmake }}
     - make
     - cudatoolkit {{ cudatoolkit }}            #[build_type == 'cuda']
@@ -34,6 +35,7 @@ requirements:
     - nccl {{ nccl }}                          #[build_type == 'cuda']
     - libgcc-ng {{ libgcc }}
     - libstdcxx-ng {{ libstdcxx }}
+    - libgfortran-ng {{ libgfortran }}
 
 build:
   number: 2
@@ -124,12 +126,14 @@ outputs:
         - {{ compiler('cxx') }}
         - libgcc-ng {{ libgcc }}
         - libstdcxx-ng {{ libstdcxx }}
+        - libgfortran-ng {{ libgfortran }}
       host:
         - {{ pin_subpackage('libxgboost', exact=True) }}
         - python {{ python }}
         - setuptools {{ setuptools }}
         - libgcc-ng {{ libgcc }}
         - libstdcxx-ng {{ libstdcxx }}
+        - libgfortran-ng {{ libgfortran }}
       run:
         - {{ pin_subpackage('libxgboost', exact=True) }}
         - python {{ python }}
