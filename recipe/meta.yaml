@@ -20,7 +20,6 @@ requirements:
     - {{ compiler('cxx') }}
     - libgcc-ng {{ libgcc }}
     - libstdcxx-ng {{ libstdcxx }}
-    - libgfortran-ng {{ libgfortran }}
     - cmake {{ cmake }}
     - make
     - git >={{ git }}
@@ -30,7 +29,6 @@ requirements:
     - nccl {{ nccl }}                          #[build_type == 'cuda']
     - libgcc-ng {{ libgcc }}
     - libstdcxx-ng {{ libstdcxx }}
-    - libgfortran-ng {{ libgfortran }}
 
 build:
   number: 5
