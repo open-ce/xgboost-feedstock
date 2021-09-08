@@ -37,7 +37,7 @@ requirements:
     - libstdcxx-ng {{ libstdcxx }}
 
 build:
-  number: 2
+  number: 3
   run_exports:
     - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
 {% if build_type == 'cuda' %}
