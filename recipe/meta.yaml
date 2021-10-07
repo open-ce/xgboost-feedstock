@@ -83,7 +83,7 @@ outputs:
         - cudatoolkit {{ cudatoolkit }}        #[build_type == 'cuda']
         - nccl {{ nccl }}                      #[build_type == 'cuda']
       run_constrained:
-        - xgboost-proc {{ build_type }}
+        - xgboost-proc * {{ build_type }}
 
     about:
       home: https://github.com/dmlc/xgboost/
