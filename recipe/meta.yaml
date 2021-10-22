@@ -125,7 +125,7 @@ outputs:
         - scipy {{ scipy }}
         - scikit-learn
       run_constrained:
-        - xgboost-proc {{ build_type }}
+        - xgboost-proc * {{ build_type }}
     test:
       files:
         - test-py-xgboost.py
