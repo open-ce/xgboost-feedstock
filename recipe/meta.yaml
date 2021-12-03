@@ -1,5 +1,5 @@
 # Builds the CPU and CUDA variants of libxgboost and xgboost packages
-{% set version = "1.4.2" %}
+{% set version = "1.5.1" %}
 {% set build_ext_version = version %}
 {% set proc_build_number = "1" %}
 
@@ -16,10 +16,7 @@ source:
     # xgboost patches
     - 0001-conda-Unbundle-libxgboost.-dll-dylib-so.patch
     - 0002-Fix-R-package-PKGROOT.patch
-    - 0003-Fixed-a-test-failure-in-test_with_pandas.py.patch
     - 0004-Use-central-cuda-capabilities.patch  #[build_type == 'cuda']
-
-build:
 
 requirements:
   build:
@@ -34,7 +31,7 @@ requirements:
     - nccl {{ nccl }}                          #[build_type == 'cuda']
 
 build:
-  number: 4
+  number: 1
   run_exports:
     - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
 {% if build_type == 'cuda' %}
@@ -44,7 +41,6 @@ build:
 
 outputs:
   - name: xgboost-proc
-    version: {{ build_ext_version }}
     build:
       number: {{ proc_build_number }}
       string: {{ build_type }}
@@ -60,7 +56,6 @@ outputs:
 
   - name: libxgboost
     script: install-libxgboost.sh
-    version: {{ version }}
     build:
       string: {{ build_type }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
       string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
@@ -105,7 +100,6 @@ outputs:
 
   - name: xgboost
     script: install-py-xgboost.sh
-    version: {{ version }}
     build:
       string: {{ build_type }}_py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cpu']
       string: {{ build_type }}{{ cudatoolkit | replace(".*", "") }}_py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }} #[build_type == 'cuda']
