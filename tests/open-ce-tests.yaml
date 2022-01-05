@@ -3,8 +3,12 @@ tests:
     command: |
         conda install -y git
         git clone --recursive -b v$(python -c "import xgboost; print(xgboost.__version__)") https://github.com/dmlc/xgboost
-        conda install -y pytest mock hypothesis matplotlib pandas python-graphviz urllib3 psutil
-        conda install -y dask=2.30 distributed 
+        conda install -y pytest mock hypothesis matplotlib pandas urllib3 psutil
+        PYTHON_VER=$(python -c 'import platform; print(platform.python_version())')
+        if [[ ! "$PYTHON_VER" =~ "3.9" ]]
+        then
+            conda install -y python-graphviz        # graphviz doesn't install with python3.9
+        fi 
   - name: Run XGBoost Python tests
     command: |
         cd xgboost
