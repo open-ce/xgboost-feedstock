@@ -14,11 +14,7 @@ tests:
         cd xgboost
         PYTHON_VER=$(python -c 'import platform; print(platform.python_version())')
         SKIPPED_TESTS="not test_cli and not test_plotting and not test_sklearn_plotting"
-        if [[ "$PYTHON_VER" =~ "3.6" ]]
-        then
-           SKIPPED_TESTS+="and not test_with_asyncio"
-        fi
-
         pytest -v -k "${SKIPPED_TESTS}" tests/python
+
   - name: Clean tests
     command: rm -rf xgboost
