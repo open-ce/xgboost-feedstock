@@ -3,18 +3,18 @@ tests:
     command: |
         conda install -y git
         git clone --recursive -b v$(python -c "import xgboost; print(xgboost.__version__)") https://github.com/dmlc/xgboost
-        conda install -y pytest mock hypothesis matplotlib pandas python-graphviz urllib3 psutil
-        conda install -y dask=2.30 distributed 
+        conda install -y pytest mock hypothesis matplotlib pandas urllib3 psutil
+        PYTHON_VER=$(python -c 'import platform; print(platform.python_version())')
+        if [[ ! "$PYTHON_VER" =~ "3.9" ]]
+        then
+            conda install -y python-graphviz        # graphviz doesn't install with python3.9
+        fi 
   - name: Run XGBoost Python tests
     command: |
         cd xgboost
         PYTHON_VER=$(python -c 'import platform; print(platform.python_version())')
-        SKIPPED_TESTS="not test_cli and not test_plotting and not test_sklearn_plotting and not test_model_compatibility and not test_hist and not test_approx "
-        if [[ "$PYTHON_VER" =~ "3.6" ]]
-        then
-           SKIPPED_TESTS+="and not test_with_asyncio"
-        fi
-
+        SKIPPED_TESTS="not test_cli and not test_plotting and not test_sklearn_plotting"
         pytest -v -k "${SKIPPED_TESTS}" tests/python
+
   - name: Clean tests
     command: rm -rf xgboost
