@@ -1,5 +1,5 @@
 # Builds the CPU and CUDA variants of libxgboost and xgboost packages
-{% set version = "1.6.0" %}
+{% set version = "1.6.1" %}
 {% set build_ext_version = version %}
 {% set proc_build_number = "1" %}
 
@@ -20,7 +20,7 @@ source:
     - 0005-Feature-shape-mismatch-fix-s390x.patch #[s390x]
 
 build:
-  number: 3
+  number: 1
   run_exports:
     - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
 
