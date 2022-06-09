@@ -57,8 +57,8 @@ outputs:
 
     requirements:
       build:
-        - {{ compiler('c') }}          #[ppc_arch != 'p10']
-        - {{ compiler('cxx') }}        #[ppc_arch != 'p10']
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
         - cmake {{ cmake }}
         - make
         - git >={{ git }}
@@ -99,8 +99,8 @@ outputs:
 
     requirements:
       build:
-        - {{ compiler('c') }}           #[ppc_arch != 'p10']
-        - {{ compiler('cxx') }}         #[ppc_arch != 'p10']
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
       host:
         - {{ pin_subpackage('libxgboost', exact=True) }}
         - python {{ python }}
