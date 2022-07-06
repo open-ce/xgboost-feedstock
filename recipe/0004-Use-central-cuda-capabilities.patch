@@ -1,43 +1,23 @@
-From f5a8d296fcd668c68c6d7a0f45f1c0059ff6bc95 Mon Sep 17 00:00:00 2001
-From: Nishidha Panpaliya <npanpa23@in.ibm.com>
-Date: Mon, 27 Sep 2021 06:09:41 -0400
-Subject: [PATCH] Use central cuda capabilities
-
----
- cmake/Utils.cmake | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
 diff --git a/cmake/Utils.cmake b/cmake/Utils.cmake
-index 645f31fe..229488ae 100644
+index 963c494c..543a9d3d 100644
 --- a/cmake/Utils.cmake
 +++ b/cmake/Utils.cmake
-@@ -91,16 +91,23 @@ function(format_gencode_flags flags out)
+@@ -91,7 +91,9 @@ function(format_gencode_flags flags out)
    # Set up architecture flags
    if(NOT flags)
      if (CUDA_VERSION VERSION_GREATER_EQUAL "11.1")
--      set(flags "50;52;60;61;70;75;80;86")
-+      #set(flags "50;52;60;61;70;75;80;86")
+-      set(flags "52;60;61;70;75;80;86")
++      #set(flags "52;60;61;70;75;80;86")
 +      string(REPLACE "," ";" tmpflags "$ENV{cuda_levels}")
 +      string(REPLACE "." "" flags "${tmpflags};8.6")
      elseif (CUDA_VERSION VERSION_GREATER_EQUAL "11.0")
--      set(flags "35;50;52;60;61;70;75;80")
-+      #set(flags "35;50;52;60;61;70;75;80")
-+      string(REPLACE "," ";" tmpflags "$ENV{cuda_levels}")
-+      string(REPLACE "." "" flags "${tmpflags}")
+       set(flags "52;60;61;70;75;80")
      elseif(CUDA_VERSION VERSION_GREATER_EQUAL "10.0")
--      set(flags "35;50;52;60;61;70;75")
-+      #set(flags "35;50;52;60;61;70;75")
-+      string(REPLACE "," ";" tmpflags "$ENV{cuda_levels}")
-+      string(REPLACE "." "" flags "${tmpflags}")
-     elseif(CUDA_VERSION VERSION_GREATER_EQUAL "9.0")
-       set(flags "35;50;52;60;61;70")
+@@ -101,6 +103,7 @@ function(format_gencode_flags flags out)
      else()
        set(flags "35;50;52;60;61")
      endif()
 +    message(STATUS "Using Open-CE Centralized CUDA Capabilities: ${flags}")
    endif()
- 
-   if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.18")
--- 
-2.23.0
 
+   if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.18")
