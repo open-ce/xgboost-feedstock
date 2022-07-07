@@ -1,23 +1,28 @@
 diff --git a/cmake/Utils.cmake b/cmake/Utils.cmake
-index 963c494c..543a9d3d 100644
+index 963c494c..64bbfdd7 100644
 --- a/cmake/Utils.cmake
 +++ b/cmake/Utils.cmake
-@@ -91,7 +91,9 @@ function(format_gencode_flags flags out)
+@@ -90,8 +90,13 @@ function(format_gencode_flags flags out)
+   endif()
    # Set up architecture flags
    if(NOT flags)
-     if (CUDA_VERSION VERSION_GREATER_EQUAL "11.1")
+-    if (CUDA_VERSION VERSION_GREATER_EQUAL "11.1")
 -      set(flags "52;60;61;70;75;80;86")
++    if (CUDA_VERSION VERSION_GREATER_EQUAL "11.4")
++      string(REPLACE "," ";" tmpflags "$ENV{cuda_levels}")
++      string(REPLACE "." "" flags "${tmpflags}")
++    elseif (CUDA_VERSION VERSION_GREATER_EQUAL "11.1")
 +      #set(flags "52;60;61;70;75;80;86")
 +      string(REPLACE "," ";" tmpflags "$ENV{cuda_levels}")
 +      string(REPLACE "." "" flags "${tmpflags};8.6")
      elseif (CUDA_VERSION VERSION_GREATER_EQUAL "11.0")
        set(flags "52;60;61;70;75;80")
      elseif(CUDA_VERSION VERSION_GREATER_EQUAL "10.0")
-@@ -101,6 +103,7 @@ function(format_gencode_flags flags out)
+@@ -101,6 +106,7 @@ function(format_gencode_flags flags out)
      else()
        set(flags "35;50;52;60;61")
      endif()
 +    message(STATUS "Using Open-CE Centralized CUDA Capabilities: ${flags}")
    endif()
-
+ 
    if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.18")
