@@ -20,7 +20,7 @@ source:
     - 0005-Feature-shape-mismatch-fix-s390x.patch #[s390x]
 
 build:
-  number: 1
+  number: 2
   run_exports:
     - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
 
@@ -57,8 +57,8 @@ outputs:
 
     requirements:
       build:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
+        - {{ compiler('c') }}          #[ppc_arch != 'p10']
+        - {{ compiler('cxx') }}        #[ppc_arch != 'p10']
         - cmake {{ cmake }}
         - make
         - git >={{ git }}
@@ -99,8 +99,8 @@ outputs:
 
     requirements:
       build:
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
+        - {{ compiler('c') }}              #[ppc_arch != 'p10']
+        - {{ compiler('cxx') }}            #[ppc_arch != 'p10']
       host:
         - {{ pin_subpackage('libxgboost', exact=True) }}
         - python {{ python }}
