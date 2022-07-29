@@ -17,10 +17,9 @@ source:
     - 0001-conda-Unbundle-libxgboost.-dll-dylib-so.patch
     - 0002-Fix-R-package-PKGROOT.patch
     - 0004-Use-central-cuda-capabilities.patch #[build_type == 'cuda']
-    - 0005-Feature-shape-mismatch-fix-s390x.patch #[s390x]
 
 build:
-  number: 1
+  number: 2
   run_exports:
     - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
 
