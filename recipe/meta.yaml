@@ -1,5 +1,5 @@
 # Builds the CPU and CUDA variants of libxgboost and xgboost packages
-{% set version = "1.6.1" %}
+{% set version = "1.6.2" %}
 {% set build_ext_version = version %}
 {% set proc_build_number = "1" %}
 
@@ -19,7 +19,7 @@ source:
     - 0004-Use-central-cuda-capabilities.patch #[build_type == 'cuda']
 
 build:
-  number: 2
+  number: 1
   run_exports:
     - {{ pin_subpackage("libxgboost", max_pin="x.x.x") }}
 
