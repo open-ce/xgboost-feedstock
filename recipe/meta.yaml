@@ -29,8 +29,6 @@ outputs:
       number: {{ proc_build_number }}
       string: {{ build_type }}
     test:
-      requires:
-        - conda 4.12
       commands:
          - exit 0
     about:
@@ -113,8 +111,6 @@ outputs:
       run_constrained:
         - xgboost-proc * {{ build_type }}
     test:
-      requires:
-        - conda 4.12
       files:
         - test-py-xgboost.py
       commands:
