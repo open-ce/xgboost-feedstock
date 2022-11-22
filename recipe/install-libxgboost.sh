@@ -17,11 +17,6 @@
 
 . activate "${BUILD_PREFIX}"
 
-# Patching the submodule here to fix build error in conda environment
-cd ${SRC_DIR}/dmlc-core
-git apply ${RECIPE_DIR}/0003-Conda-Build-fixed.patch
-cd ..
-
 mkdir -p build
 cd build
 
