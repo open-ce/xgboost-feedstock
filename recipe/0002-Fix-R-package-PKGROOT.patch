@@ -1,17 +1,15 @@
-From 99adf2cb8b82af8b05bb0053e5c5148f69488845 Mon Sep 17 00:00:00 2001
-From: Ray Donnelly <mingw.android@gmail.com>
-Date: Fri, 24 Mar 2017 07:23:49 -0500
-Subject: [PATCH 2/5] Fix R-package PKGROOT
+From 192c432c8e609cf6133326ed91d7147f6c7d8a2a Mon Sep 17 00:00:00 2001
+From: Deepali Chourasia <deepch23@in.ibm.com>
+Date: Tue, 8 Nov 2022 07:41:21 +0000
+Subject: [PATCH] Fix R-package PKGROOT
 
-It pointed to the wrong directory on Windows and had a
-trailing / on all systems leading to double /
 ---
  R-package/src/Makevars.in  | 2 +-
  R-package/src/Makevars.win | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/R-package/src/Makevars.in b/R-package/src/Makevars.in
-index 076ad720..2019dff6 100644
+index 54f3acaa..4b5def7b 100644
 --- a/R-package/src/Makevars.in
 +++ b/R-package/src/Makevars.in
 @@ -1,5 +1,5 @@
@@ -22,16 +20,16 @@ index 076ad720..2019dff6 100644
  # _*_ mode: Makefile; _*_
  
 diff --git a/R-package/src/Makevars.win b/R-package/src/Makevars.win
-index 2e241164..31416b40 100644
+index c0815353..bd78465b 100644
 --- a/R-package/src/Makevars.win
 +++ b/R-package/src/Makevars.win
 @@ -1,5 +1,5 @@
  # package root
--PKGROOT=./
+-PKGROOT=../../
 +PKGROOT=../..
  ENABLE_STD_THREAD=0
  # _*_ mode: Makefile; _*_
  
 -- 
-2.17.1
+2.34.1
 
