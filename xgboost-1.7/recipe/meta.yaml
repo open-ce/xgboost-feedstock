@@ -107,7 +107,7 @@ outputs:
         - python {{ python }}
         - numpy {{ numpy }}
         - scipy {{ scipy }}
-        - scikit-learn
+        - scikit-learn {{ scikit_learn }}
       run_constrained:
         - xgboost-proc * {{ build_type }}
     test:
