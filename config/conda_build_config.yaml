@@ -1,6 +1,6 @@
 c_compiler_version:
-  - 8.4.0                      # [x86_64]
-  - 8.2.0                      # [ppc64le]
+  - 8.4.0                      # [x86_64 and cudatoolkit == '11.2']
+  - 8.2.0                      # [ppc64le and cudatoolkit == '11.2']
 cxx_compiler_version:
-  - 8.4.0                      # [x86_64]
-  - 8.2.0                      # [ppc64le]
+  - 8.4.0                      # [x86_64 and cudatoolkit == '11.2']
+  - 8.2.0                      # [ppc64le and cudatoolkit == '11.2']
