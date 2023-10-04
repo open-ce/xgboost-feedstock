@@ -18,5 +18,5 @@
 . activate "${PREFIX}"
 
 pushd ${SRC_DIR}/python-package
-  ${PYTHON} setup.py install --single-version-externally-managed --record=record.txt
+  ${PYTHON} -m pip install -v . --config-settings use_system_libxgboost=True
 popd

@@ -1,23 +1,21 @@
-From 674b1e1eafd3ddbcabbd990d7da3c82eb539d851 Mon Sep 17 00:00:00 2001
-From: Deepali Chourasia <deepch23@in.ibm.com>
-Date: Tue, 8 Nov 2022 07:44:57 +0000
-Subject: [PATCH] use centralized cuda capabilities
+From 77cda4dbda989789a7bd8b3b568ac5130faca69e Mon Sep 17 00:00:00 2001
+From: Aman-Surkar <aman_surkar@persistent.com>
+Date: Wed, 4 Oct 2023 05:30:22 +0000
+Subject: [PATCH] Use central cuda capabilities
 
 ---
- cmake/Utils.cmake | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ cmake/Utils.cmake | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/cmake/Utils.cmake b/cmake/Utils.cmake
-index f28c1f27..f0b6f1b2 100644
+index 08050205..4ea974d7 100644
 --- a/cmake/Utils.cmake
 +++ b/cmake/Utils.cmake
-@@ -90,8 +90,13 @@ function(format_gencode_flags flags out)
-   endif()
-   # Set up architecture flags
+@@ -92,6 +92,13 @@ function(format_gencode_flags flags out)
    if(NOT flags)
--    if (CUDA_VERSION VERSION_GREATER_EQUAL "11.1")
--      set(flags "50;60;70;80")
-+    if (CUDA_VERSION VERSION_GREATER_EQUAL "11.4")
+     if (CUDA_VERSION VERSION_GREATER_EQUAL "11.8")
+       set(flags "50;60;70;80;90")
++    elseif (CUDA_VERSION VERSION_GREATER_EQUAL "11.4")
 +      string(REPLACE "," ";" tmpflags "$ENV{cuda_levels}")
 +      string(REPLACE "." "" flags "${tmpflags}")
 +    elseif (CUDA_VERSION VERSION_GREATER_EQUAL "11.1")
@@ -27,7 +25,7 @@ index f28c1f27..f0b6f1b2 100644
      elseif (CUDA_VERSION VERSION_GREATER_EQUAL "11.0")
        set(flags "50;60;70;80")
      elseif(CUDA_VERSION VERSION_GREATER_EQUAL "10.0")
-@@ -101,6 +106,7 @@ function(format_gencode_flags flags out)
+@@ -101,6 +108,7 @@ function(format_gencode_flags flags out)
      else()
        set(flags "35;50;60")
      endif()
@@ -36,5 +34,5 @@ index f28c1f27..f0b6f1b2 100644
  
    if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.18")
 -- 
-2.34.1
+2.40.1
 

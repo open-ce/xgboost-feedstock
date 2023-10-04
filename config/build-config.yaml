@@ -1,4 +1,4 @@
 recipes:
-  - name : xgboost-1.7
-    path : xgboost-1.7/recipe
+  - name : xgboost-2.0
+    path : xgboost-2.0/recipe
 
