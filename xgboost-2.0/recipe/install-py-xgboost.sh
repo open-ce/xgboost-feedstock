@@ -18,5 +18,10 @@
 . activate "${PREFIX}"
 
 pushd ${SRC_DIR}/python-package
-  ${PYTHON} -m pip install -v . --config-settings use_system_libxgboost=True
+  if [[ $build_type == "cuda" ]]
+  then
+    ${PYTHON} -m pip install -v . --config-settings use_cuda=True --config-settings use_nccl=True
+  else
+    ${PYTHON} -m pip install -v .
+  fi
 popd
