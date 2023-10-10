@@ -20,8 +20,8 @@
 pushd ${SRC_DIR}/python-package
   if [[ $build_type == "cuda" ]]
   then
-    ${PYTHON} -m pip install -v . --config-settings use_cuda=True --config-settings use_nccl=True
+    ${PYTHON} -m pip install -v . --no-deps --ignore-installed  --config-settings use_cuda=True --config-settings use_nccl=True
   else
-    ${PYTHON} -m pip install -v .
+    ${PYTHON} -m pip install -v . --no-deps --ignore-installed
   fi
 popd
