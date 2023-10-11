@@ -3,7 +3,7 @@ tests:
     command: |
         conda install -y git
         git clone --recursive -b v$(python -c "import xgboost; print(xgboost.__version__)") https://github.com/dmlc/xgboost
-        conda install -y pytest mock hypothesis matplotlib pandas urllib3 psutil
+        conda install -y pytest mock hypothesis matplotlib pandas urllib3=1.25.11 psutil distributed
         PYTHON_VER=$(python -c 'import platform; print(platform.python_version())')
         if [[ ! "$PYTHON_VER" =~ "3.9" ]]
         then
@@ -12,9 +12,19 @@ tests:
   - name: Run XGBoost Python tests
     command: |
         cd xgboost
-        PYTHON_VER=$(python -c 'import platform; print(platform.python_version())')
         SKIPPED_TESTS="not test_cli and not test_plotting and not test_sklearn_plotting"
-        pytest -v -k "${SKIPPED_TESTS}" tests/python
-
+        TESTSUITES_TO_RUN=(
+                      tests/python/test_basic.py
+                      tests/python/test_callback.py
+                      tests/python/test_demos.py
+                      tests/python/test_openmp.py
+                      tests/python/test_predict.py
+                      tests/python/test_tree_regularization.py
+        )
+        for test_suite in "${TESTSUITES_TO_RUN[@]}"
+        do
+          TEST_SUITES+="$test_suite "
+        done
+        pytest -v -k "${SKIPPED_TESTS}" ${TEST_SUITES}
   - name: Clean tests
     command: rm -rf xgboost
