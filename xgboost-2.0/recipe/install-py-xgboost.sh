@@ -18,5 +18,10 @@
 . activate "${PREFIX}"
 
 pushd ${SRC_DIR}/python-package
-  ${PYTHON} setup.py install --single-version-externally-managed --record=record.txt
+  if [[ $build_type == "cuda" ]]
+  then
+    ${PYTHON} -m pip install -v . --no-deps --ignore-installed  --config-settings use_cuda=True --config-settings use_nccl=True
+  else
+    ${PYTHON} -m pip install -v . --no-deps --ignore-installed
+  fi
 popd

@@ -1,0 +1,27 @@
+From fe9487352675c8b0be26f30be9e9e2af0c103fab Mon Sep 17 00:00:00 2001
+From: Aman-Surkar <aman_surkar@persistent.com>
+Date: Mon, 8 Jan 2024 13:00:50 +0000
+Subject: [PATCH] conda-Unbundle-libxgboost.-dll-dylib-so
+
+---
+ python-package/xgboost/libpath.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/python-package/xgboost/libpath.py b/python-package/xgboost/libpath.py
+index 58c78df09..bb682b929 100644
+--- a/python-package/xgboost/libpath.py
++++ b/python-package/xgboost/libpath.py
+@@ -31,6 +31,10 @@ def find_lib_path() -> List[str]:
+     ]
+ 
+     if sys.platform == "win32":
++        dll_path = [os.path.join(sys.prefix, 'Library', 'mingw-w64', 'bin')]
++    else:
++        dll_path = [os.path.join(sys.prefix, 'lib')]
++    if sys.platform == 'win32':
+         # On Windows, Conda may install libs in different paths
+         dll_path.extend(
+             [
+-- 
+2.40.1
+
