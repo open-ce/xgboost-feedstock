@@ -58,7 +58,7 @@ outputs:
         - {{ compiler('cxx') }}
         - cmake {{ cmake }}
         - make
-        - git >={{ git }}
+        - git {{ git }} pl5340h4fa2fa2_1
         - patch
       host:
         - cudatoolkit {{ cudatoolkit }}            #[build_type == 'cuda']
