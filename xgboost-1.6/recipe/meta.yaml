@@ -111,6 +111,8 @@ outputs:
       run_constrained:
         - xgboost-proc * {{ build_type }}
     test:
+      requires :
+        - setuptools {{ setuptools }}
       files:
         - test-py-xgboost.py
       commands:
